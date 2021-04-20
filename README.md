@@ -7,6 +7,9 @@
 
 Trata-se de uma API CRUD para manter produtos relacionados a categorias e ao consumo de um serviço externo, API do IBGE que lista todos estados brasileiros.
 
+## Documentação POSTMAN
+[Acesse a documentação no postman](https://bit.ly/3sCfrjc)
+
 ## Indices
 
 * [Categoria](#categoria)
