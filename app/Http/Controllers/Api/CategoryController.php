@@ -83,21 +83,12 @@ class CategoryController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        $rules = [
-            'name' => 'required|unique:categories'
-        ];
+        $category = Category::find($id);
+        if(!$category)
+            return response()->json(['result' => ['status' => 'error', 'message' => 'categoria inexistente']], 404);
 
-        $messages = [
-            'name.required' => 'Nome é obrigatório',
-            'name.unique' => 'Categoria já existe'
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails())
-            return response()->json(['result' => ['status' => 'error', 'message' => $validator->messages()]], 400);
 
         $category->name = $request->name;
 

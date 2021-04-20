@@ -89,31 +89,19 @@ class ProductController extends Controller
      * @param Product $product
      * @return JsonResponse
      */
-    public function update(Request $request, Product $product): JsonResponse
+    public function update(Request $request, $id): JsonResponse
     {
-        $rules = [
-            'name' => 'required',
-            'category' => 'required',
-            'price' => 'required',
-            'quantity' => 'numeric',
-        ];
-
-        $messages = [
-            'category.required' => 'Categoria é necessária'
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails())
-            return response()->json($validator->messages(), 400);
+        $product = Product::find($id);
+        if(!$product)
+            return response()->json(['result' => ['status' => 'error', 'message' => 'produto inexistente']], 404);
 
         if (!$this->categoryExist($request->category))
             return response()->json(['result' => ['status' => 'error', 'message' => 'categoria inexistente']], 404);
 
-        $product->name = $request->name;
-        $product->category = $request->category;
-        $product->price = $request->price;
-        $product->quantity = $request->quantity;
+        $product->name = $request->name ?? $product->name;
+        $product->category = $request->category ?? $product->category;
+        $product->price = $request->price ?? $product->price;
+        $product->quantity = $request->quantity ?? $product->quantity;
 
         if(!$product->save())
             return response()->json(['result' => ['status' => 'error', 'message' => 'erro não esperado']], 500);
